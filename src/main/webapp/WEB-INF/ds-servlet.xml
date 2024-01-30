@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="system"/>
+		<property name="password" value="pankaj"/>
+	</bean>
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<bean id="studentDao" class="com.sms.dao.StudentDaoImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>
+	
+	<bean name="/*" class="com.sms.controller.StudentController">
+		<property name="stdDao" ref="studentDao"></property>
+	</bean>
+	<bean name="/homepage" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="home"/>		
+	</bean>
+	<bean name="/addform" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="addform"/>		
+	</bean>
+	<bean name="/searchform" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="searchform"/>		
+	</bean>
+	<bean name="/updateform" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="updateform"/>		
+	</bean>
+	<!--  
+	<bean name="/editform" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="editform"/>		
+	</bean>
+	-->
+	<bean name="/deleteform" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="deleteform"/>		
+	</bean>
+	<bean name="handlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+	<bean name="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/"/>
+		<property name="suffix" value=".jsp"/>
+</bean>
+</beans>
